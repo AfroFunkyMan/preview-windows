@@ -1,0 +1,12 @@
+{
+  "name": "preview-windows",
+  "version": "0.0.1",
+  "description": "modal window generetor",
+  "main": "index.html",
+  "keywords": [
+    "SVG",
+    "JS"
+  ],
+  "author": "Ruslan Zhubanishchev",
+  "license": "MIT"
+}
