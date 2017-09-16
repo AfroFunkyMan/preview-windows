@@ -13,32 +13,35 @@ body{
 
 
 .preview-window{
+    position: absolute;
     display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
+    flex-direction:column;
+    justify-content: space-between;
+    align-items: stretch;
     width: 500px;
     height: 300px;
     border: solid 1px black;
-    position: absolute;
 }
 
-.preview-window-header{
+.preview-window__header{
     display: inline-flex;
     align-items:center;
     justify-content: space-between;
     width: 100%;
-    height: 30px;
+    height: 25px;
+    min-height: 30px;
 }
 
-.preview-window-main {
+.preview-window__main {
     position: relative;
     display: block;
     width: 100%;
-    height: 80%;
+    height: calc(100% - 60px);
+    align-self: stretch;
     border: solid 1px red;
 }
 
-.preview-window-footer{
+.preview-window__footer{
     position: relative;
     display: inline-flex;
     align-items:center;

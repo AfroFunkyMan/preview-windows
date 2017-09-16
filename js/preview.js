@@ -1,7 +1,7 @@
 
 let svg_example =
-    `<div class="preview-window">
-  <div class="preview-window-header">
+    `
+  <div class="preview-window__header">
     <div></div>
     <div>Name</div>
     <div>
@@ -13,13 +13,13 @@ let svg_example =
       </svg>
     </div>
   </div>
-  <div class="preview-window-main">
+  <div class="preview-window__main">
     <svg height="100%" width="100%">
       <polyline points="20,20 40,25 60,40 80,120 120,140 200,180" style="fill:none;stroke:black;stroke-width:3" />
       Sorry, your browser does not support inline SVG.
     </svg>
   </div>
-  <div class="preview-window-footer">
+  <div class="preview-window__footer">
       <div></div>
       <div>
         <button>Open</button>
@@ -31,8 +31,7 @@ let svg_example =
         <path d="m8.9,11.742l-4-4c-0.3-0.3-0.9-0.1-0.9,0.4v1c0,0.6-0.4,1-1,1h-2c-0.6,0-1-0.4-1-1v-8c0-0.6 0.4-1 1-1h8c0.6,0 1,0.4 1,1v2c0,0.6-0.4,1-1,1h-1c-0.4,0-0.7,0.5-0.4,0.9l4,4c0.4,0.4 0.4,1 0,1.4l-1.4,1.4c-0.3,0.3-0.9,0.3-1.3-0.1z"/>
       </g>
     </svg>
-  </div>
-</div>`;
+  </div>`;
 
 
 //todo create window with
@@ -85,7 +84,7 @@ class previewWindow {
         this.windows[windowsCount].element.innerHTML = svg_example;
         document.body.appendChild(this.windows[windowsCount].element);
         //windows[windowsCount].element.querySelector(':after');
-        let header = this.windows[windowsCount].element.querySelector('.preview-window-header');
+        let header = this.windows[windowsCount].element.querySelector('.preview-window__header');
         let mHeader = new Hammer(header);
 
         mHeader.add(new Hammer.Pan({direction: Hammer.DIRECTION_ALL, threshold: 0}));
@@ -94,7 +93,7 @@ class previewWindow {
             _self.handleDragWindow(event, this.windows[windowsCount])
         });
 
-        let footer = this.windows[windowsCount].element.querySelector('.preview-window-footer:last-child');
+        let footer = this.windows[windowsCount].element.querySelector('.preview-window__footer:last-child');
         let mFooter = new Hammer(footer);
 
         mFooter.add(new Hammer.Pan({direction: Hammer.DIRECTION_ALL, threshold: 0}));
@@ -142,6 +141,7 @@ class previewWindow {
     }
 
     handleResizeWindow(ev, window) {
+
         let {lastPosX = 0, lastPosY = 0, isDragging = false} = window;
 
         let elem = window.element;
@@ -149,17 +149,16 @@ class previewWindow {
 
         if (!isDragging) {
             isDragging = true;
-            elem.style.zIndex = 1000;
-            lastPosX = elem.offsetLeft;
-            lastPosY = elem.offsetTop;
+            lastPosX = elem.clientWidth;
+            lastPosY = elem.clientHeight;
             Object.assign(window,{lastPosX, lastPosY, isDragging});
         }
 
         let posX = ev.deltaX + lastPosX;
         let posY = ev.deltaY + lastPosY;
 
-        elem.style.left = posX + "px";
-        elem.style.top = posY + "px";
+        elem.style.width = posX + "px";
+        elem.style.height = posY + "px";
 
         if (ev.isFinal) {
             elem.style.zIndex = "";
