@@ -1,6 +1,15 @@
 body{
 }
 
+.hoverme{
+    display: block;
+    width: 100px;
+    height: 100px;
+    background-color: red;
+    top: 100px;
+    left: 100px;
+    position: absolute;
+}
 .clickme{
     display: block;
     width: 100px;
@@ -8,6 +17,15 @@ body{
     background-color: blue;
     top: 100px;
     left: 300px;
+    position: absolute;
+}
+.pressme{
+    display: block;
+    width: 100px;
+    height: 100px;
+    background-color: green;
+    top: 100px;
+    left: 500px;
     position: absolute;
 }
 

@@ -239,20 +239,20 @@ class PreviewWindowsGenerator extends previewWindow{
     }
 
     showWindowAction(HTMLObject) {
-        if (this.options.mobile) this.clickEventHandler(HTMLObject);
+        if (this.options.mobile && this.options.mouseTriggerType === 0) this.clickEventHandler(HTMLObject);
 
         if (!this.options.mobile && this.options.mouseTriggerType === 0) this.mouseOverEventHander(HTMLObject);
 
-        if (!this.options.mobile && this.options.mouseTriggerType === 1) this.clickEventHandler(HTMLObject);
+        if (this.options.mouseTriggerType === 1) this.clickEventHandler(HTMLObject);
 
-        if (!this.options.mobile && this.options.mouseTriggerType === 2) this.pressEventHandler(HTMLObject);
+        if (this.options.mouseTriggerType === 2) this.pressEventHandler(HTMLObject);
     }
 
     pressEventHandler(HTMLObject){
         let hammer = new Hammer.Manager(HTMLObject);
         hammer.add(new Hammer.Press());
         hammer.on('press', event => {
-            this.clickEventHandler(HTMLObject)
+            this.createClickWindow(HTMLObject)
         });
     }
 
@@ -295,5 +295,7 @@ class PreviewWindowsGenerator extends previewWindow{
 
 
 
-let previewWindowsGenerator  = new PreviewWindowsGenerator('.clickme',{all:true, windowsLimit:1, mouseTriggerType: 0, mouseOverShowTime:1});
+let previewWindowsGenerator  = new PreviewWindowsGenerator('.hoverme',{all:true, windowsLimit:1, mouseTriggerType: 0, mouseOverShowTime:1});
+let previewWindowsGenerator1  = new PreviewWindowsGenerator('.clickme',{all:true, windowsLimit:1, mouseTriggerType: 1});
+let previewWindowsGenerator2  = new PreviewWindowsGenerator('.pressme',{all:false, windowsLimit:1, mouseTriggerType: 2});
 
