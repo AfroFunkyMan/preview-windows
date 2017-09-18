@@ -260,9 +260,16 @@ class PreviewWindowsGenerator extends previewWindow{
 
     mouseOverEventHander(HTMLObject){
         let _self = this;
+        let timer;
         HTMLObject.onmouseenter  = function(){
-            _self.createMouseOverWindow(HTMLObject);
+            timer = setTimeout(()=>{
+                _self.createMouseOverWindow(HTMLObject);
+            }, _self.options.mouseOverShowTime);
         };
+
+        HTMLObject.onmouseleave = () => {
+            clearTimeout(timer)
+        }
 
     }
 
@@ -282,5 +289,5 @@ class PreviewWindowsGenerator extends previewWindow{
 
 
 
-let previewWindowsGenerator  = new PreviewWindowsGenerator('.clickme',{all:true, windowsLimit:1, mouseTriggerType: 1});
+let previewWindowsGenerator  = new PreviewWindowsGenerator('.clickme',{all:true, windowsLimit:1, mouseTriggerType: 0, mouseOverShowTime:5});
 
