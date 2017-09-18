@@ -3,10 +3,16 @@
   "version": "0.0.1",
   "description": "modal window generetor",
   "main": "index.html",
+  "scripts": {
+    "dev": "lite-server"
+  },
   "keywords": [
     "SVG",
     "JS"
   ],
   "author": "Ruslan Zhubanishchev",
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "lite-server": "^2.3.0"
+  }
 }

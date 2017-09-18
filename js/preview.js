@@ -43,6 +43,8 @@ let svg_example = `
 class previewWindow {
 
     constructor() {
+
+        this.windows = [];
     }
 
 
@@ -99,8 +101,21 @@ class previewWindow {
         mFooter.on("pan", event => {
             _self.handleResizeWindow(event, this.windows[windowsCount])
         });
+
+        let closeCross = this.windows[windowsCount].element.querySelector('.preview-window__header > div:nth-child(3)');
+        let closeButton = this.windows[windowsCount].element.querySelector('.preview-window__footer > div:nth-child(2) > button:nth-child(2)');
+
+        closeCross.onclick = closeButton.onclick = ()=>{
+            this.closeWindow(windowsCount);
+        }
+
     }
 
+
+    closeWindow(windowIndex){
+        document.body.removeChild(this.windows[windowIndex].element);
+        this.windows = this.windows.filter(window => window.element !== this.windows[windowIndex].element);
+    }
 
 
     newCoords(element){
@@ -189,7 +204,6 @@ class PreviewWindowsGenerator extends previewWindow{
         let mdCheck = new MobileDetect(window.navigator.userAgent || navigator.vendor || window.opera);
         this.options.mobile = mdCheck.mobile() || mdCheck.tablet() ? true : false;
         this.windowsCount = 0;
-        this.windows = [];
 
         this.initEventHandlers(HTMLElement);
 
