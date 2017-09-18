@@ -42,7 +42,7 @@ class previewWindow {
 
 
     createMouseOverWindow(HTMLobject) {
-        let element = document.createElement('div');
+        let element = this.windows[0] = document.createElement('div');
 
         element.className = "preview-window";
         let coord = this.newCoords(element);
@@ -54,9 +54,6 @@ class previewWindow {
         element.innerHTML = svg_example;
         document.body.appendChild(element);
 
-        HTMLobject.onmouseleave = () => {
-            document.body.removeChild(element);
-        }
     }
 
     createClickWindow() {
@@ -208,6 +205,7 @@ class PreviewWindowsGenerator extends previewWindow{
         this.options.windowsLimit = options.windowsLimit || 1;
         this.options.mouseTriggerType = options.mouseTriggerType !== null ? options.mouseTriggerType :  1;
         this.options.mouseOverShowTime = options.mouseOverShowTime*1000 || 2000;
+        this.mouseOverWindowActive = false;
         let mdCheck = new MobileDetect(window.navigator.userAgent || navigator.vendor || window.opera);
         this.options.mobile = mdCheck.mobile() || mdCheck.tablet() ? true : false;
         this.windowsCount = 0;
@@ -258,17 +256,25 @@ class PreviewWindowsGenerator extends previewWindow{
         });
     }
 
-    mouseOverEventHander(HTMLObject){
+    mouseOverEventHander(HTMLObject) {
+        let timer = null;
         let _self = this;
-        let timer;
-        HTMLObject.onmouseenter  = function(){
-            timer = setTimeout(()=>{
-                _self.createMouseOverWindow(HTMLObject);
-            }, _self.options.mouseOverShowTime);
+        HTMLObject.onmouseenter = function () {
+            if (_self.mouseOverWindowActive === false) {
+                _self.mouseOverWindowActive = true;
+                timer = setTimeout(() => {
+                    _self.createMouseOverWindow(HTMLObject);
+                }, _self.options.mouseOverShowTime);
+            }
         };
 
         HTMLObject.onmouseleave = () => {
-            clearTimeout(timer)
+            clearTimeout(timer);
+            if (_self.windows[0]){
+                document.body.removeChild(_self.windows[0]);
+                _self.windows.pop();
+            }
+            _self.mouseOverWindowActive = false;
         }
 
     }
@@ -289,5 +295,5 @@ class PreviewWindowsGenerator extends previewWindow{
 
 
 
-let previewWindowsGenerator  = new PreviewWindowsGenerator('.clickme',{all:true, windowsLimit:1, mouseTriggerType: 0, mouseOverShowTime:5});
+let previewWindowsGenerator  = new PreviewWindowsGenerator('.clickme',{all:true, windowsLimit:1, mouseTriggerType: 0, mouseOverShowTime:1});
 
