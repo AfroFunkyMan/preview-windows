@@ -1,6 +1,5 @@
 
-let svg_example =
-    `
+let svg_example = `
   <div class="preview-window__header">
     <div></div>
     <div>Name</div>
@@ -248,7 +247,6 @@ class PreviewWindowsGenerator extends previewWindow{
     };
 
 }
-
 
 
 
