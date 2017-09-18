@@ -33,13 +33,6 @@ let svg_example = `
   </div>`;
 
 
-//todo create window with
-//todo close button
-//todo resize icon
-//todo rigth pan
-
-
-
 class previewWindow {
 
     constructor() {
@@ -48,8 +41,22 @@ class previewWindow {
     }
 
 
-    createMouseOverWindow(){
+    createMouseOverWindow(HTMLobject) {
+        let element = document.createElement('div');
 
+        element.className = "preview-window";
+        let coord = this.newCoords(element);
+
+        element.style.display = 'block';
+        element.style.top = coord.lastPosY + "px";
+        element.style.left = coord.lastPosX + "px";
+
+        element.innerHTML = svg_example;
+        document.body.appendChild(element);
+
+        HTMLobject.onmouseleave = () => {
+            document.body.removeChild(element);
+        }
     }
 
     createClickWindow() {
@@ -199,7 +206,7 @@ class PreviewWindowsGenerator extends previewWindow{
         this.options = {};
         this.options.all = options.all || false;
         this.options.windowsLimit = options.windowsLimit || 1;
-        this.options.mouseTriggerType = options.mouseTriggerType || 1;
+        this.options.mouseTriggerType = options.mouseTriggerType !== null ? options.mouseTriggerType :  1;
         this.options.mouseOverShowTime = options.mouseOverShowTime*1000 || 2000;
         let mdCheck = new MobileDetect(window.navigator.userAgent || navigator.vendor || window.opera);
         this.options.mobile = mdCheck.mobile() || mdCheck.tablet() ? true : false;
@@ -244,7 +251,6 @@ class PreviewWindowsGenerator extends previewWindow{
     }
 
     pressEventHandler(HTMLObject){
-        let _self = this;
         let hammer = new Hammer.Manager(HTMLObject);
         hammer.add(new Hammer.Press());
         hammer.on('press', event => {
@@ -253,11 +259,18 @@ class PreviewWindowsGenerator extends previewWindow{
     }
 
     mouseOverEventHander(HTMLObject){
-        this.createMouseOverWindow(HTMLObject);
+        let _self = this;
+        HTMLObject.onmouseenter  = function(){
+            _self.createMouseOverWindow(HTMLObject);
+        };
+
     }
 
     clickEventHandler(HTMLObject) {
-        this.createClickWindow(HTMLObject);
+        let _self = this;
+        HTMLObject.onclick = function () {
+            _self.createClickWindow(HTMLObject);
+        }
     };
 
 }
@@ -269,5 +282,5 @@ class PreviewWindowsGenerator extends previewWindow{
 
 
 
-let previewWindowsGenerator  = new PreviewWindowsGenerator('.clickme',{all:true, windowsLimit:3, mouseTriggerType: 2});
+let previewWindowsGenerator  = new PreviewWindowsGenerator('.clickme',{all:true, windowsLimit:1, mouseTriggerType: 1});
 

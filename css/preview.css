@@ -16,6 +16,7 @@ body{
     position: absolute;
     display: flex;
     flex-direction:column;
+    background-color: indigo;
     justify-content: space-between;
     align-items: stretch;
     width: 500px;
